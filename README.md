@@ -96,4 +96,3 @@ pip install -r requirements.txt
 ## 🛠️ Presentation Troubleshooting Checklist
 * **Mouse moves, but ink is not drawing on screen:** Ensure you completed step 5 above. If your slideshow window isn't active, Windows drops the background click signals into thin air.
 * **Slide skips 2 or 3 pages forward at once:** Your hand pose is triggering over multiple frames. Open `slide_controller.py` and change `cooldown_frames=25` to a larger buffer boundary metric like `35`.
->>>>>>> 7e17d38d7dc665783b27133a0fd8baa3645db58c
