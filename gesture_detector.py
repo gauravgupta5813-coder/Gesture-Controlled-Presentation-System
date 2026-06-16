@@ -62,6 +62,6 @@ class GestureDetector:
             return "INDEX_UP"         # Pointer Mode
 
         if index and middle and finger_count <= 3:
-            return "MIDDLE_FINGER"   # Draw Mode (index + middle finger)
+            return "INDEX_MIDDLE"   # Draw Mode (index + middle finger)
 
         return "UNKNOWN"

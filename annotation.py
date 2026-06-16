@@ -45,7 +45,7 @@ class AnnotationManager:
             self.gesture_history.pop(0)
         gesture = max(set(self.gesture_history), key=self.gesture_history.count)
 
-        if gesture == "MIDDLE_FINGER":
+        if gesture == "INDEX_MIDDLE":
             draw_tip = landmarks[12]
         else:
             draw_tip = landmarks[8]
@@ -91,7 +91,7 @@ class AnnotationManager:
                 pyautogui.moveTo(screen_x, screen_y)
                 self.prev_x, self.prev_y = screen_x, screen_y
 
-        elif gesture == "MIDDLE_FINGER":
+        elif gesture == "INDEX_MIDDLE":
             self.non_draw_frames = 0
             if self.last_activated_mode != "DRAW":
                 print("⚡ Action: Activating PowerPoint Drawing Pen (Ctrl + P)")
