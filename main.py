@@ -9,6 +9,8 @@ def main():
     tracker = HandTracker(model_path='hand_landmarker.task')
     controller = SlideController(cooldown_frames=25)
     annotator = AnnotationManager()
+    gesture_history = []
+    gesture_buffer_length = 5
     
     while cap.isOpened():
         success, frame = cap.read()
@@ -31,8 +33,14 @@ def main():
         
             raw_pattern = GestureDetector.get_raised_fingers(landmarks, handedness)
             print(f"DEBUG -> Raw Finger Pattern: {raw_pattern}")
-            
-            gesture = GestureDetector.identify_gesture(landmarks, handedness)
+
+            raw_gesture = GestureDetector.identify_gesture(landmarks, handedness)
+            gesture_history.append(raw_gesture)
+            if len(gesture_history) > gesture_buffer_length:
+                gesture_history.pop(0)
+            gesture = max(set(gesture_history), key=gesture_history.count)
+
+            print(f"DEBUG -> Buffered Gesture History: {gesture_history}")
             print(f"Detected Action State -> {gesture}")
                 
             action_executed = controller.trigger_action(gesture)
@@ -42,6 +50,8 @@ def main():
             cv2.putText(frame, f"Gesture: {gesture}", (30, 50), 
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
+        if not landmarks:
+            gesture_history.clear()
         annotator.update_canvas(frame, landmarks, gesture)
                     
         cv2.imshow('Main Application View', frame)

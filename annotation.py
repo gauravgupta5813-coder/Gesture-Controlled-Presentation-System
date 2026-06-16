@@ -22,11 +22,13 @@ class AnnotationManager:
         self.last_activated_mode = "NONE"                 # Tracks active PowerPoint state
 
         self.prev_x, self.prev_y = None, None
-        self.smooth_alpha = 0.25        
-        self.jitter_threshold = 4
+        self.smooth_alpha = 0.22
+        self.jitter_threshold = 8
         self.non_draw_frames = 0
-        self.release_after_frames = 3
+        self.release_after_frames = 6
         self.release_gestures = {"THUMB_UP", "OPEN_PALM", "FIST"}
+        self.gesture_history = []
+        self.history_length = 5
          
     def update_canvas(self, frame, landmarks, gesture):
         
@@ -38,9 +40,18 @@ class AnnotationManager:
             self.prev_x, self.prev_y = None, None
             return
 
-        index_tip = landmarks[8]
-        target_x = int(index_tip.x * self.screen_w)
-        target_y = int(index_tip.y * self.screen_h)
+        self.gesture_history.append(gesture)
+        if len(self.gesture_history) > self.history_length:
+            self.gesture_history.pop(0)
+        gesture = max(set(self.gesture_history), key=self.gesture_history.count)
+
+        if gesture == "MIDDLE_FINGER":
+            draw_tip = landmarks[12]
+        else:
+            draw_tip = landmarks[8]
+
+        target_x = int(draw_tip.x * self.screen_w)
+        target_y = int(draw_tip.y * self.screen_h)
 
         # --- Exponential Moving Average (EMA) स्मूथिंग फ़िल्टर ---
         if self.prev_x is None or self.prev_y is None:
@@ -80,7 +91,7 @@ class AnnotationManager:
                 pyautogui.moveTo(screen_x, screen_y)
                 self.prev_x, self.prev_y = screen_x, screen_y
 
-        elif gesture == "INDEX_MIDDLE":
+        elif gesture == "MIDDLE_FINGER":
             self.non_draw_frames = 0
             if self.last_activated_mode != "DRAW":
                 print("⚡ Action: Activating PowerPoint Drawing Pen (Ctrl + P)")

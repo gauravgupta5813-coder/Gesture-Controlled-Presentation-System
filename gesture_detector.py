@@ -1,5 +1,9 @@
 class GestureDetector:
     @staticmethod
+    def _distance(a, b):
+        return ((a.x - b.x) ** 2 + (a.y - b.y) ** 2) ** 0.5
+
+    @staticmethod
     def get_raised_fingers(landmarks, handedness):
      
         if not landmarks or not handedness:
@@ -38,24 +42,26 @@ class GestureDetector:
 
     @classmethod
     def identify_gesture(cls, landmarks, handedness):
-     
         finger_pattern = cls.get_raised_fingers(landmarks, handedness)
         if not finger_pattern:
             return "NO_HAND"
-        
+
+        thumb, index, middle, ring, pinky = finger_pattern
+        finger_count = index + middle + ring + pinky
+
         if finger_pattern == [0, 0, 0, 0, 0]:
             return "FIST"             # Erase Drawing
-            
-        elif finger_pattern[1:] == [1, 0, 0, 0]:
-            return "INDEX_UP"         # Pointer Mode
-            
-        elif finger_pattern[1:] == [1, 1, 0, 0]:
-            return "INDEX_MIDDLE"     # Draw Mode
-            
-        elif finger_pattern == [1, 0, 0, 0, 0]:
+
+        if finger_pattern == [1, 0, 0, 0, 0]:
             return "THUMB_UP"         # Next Slide
-            
-        elif finger_pattern == [1, 1, 1, 1, 1]:
+
+        if finger_count >= 4:
             return "OPEN_PALM"        # Previous Slide
+
+        if index and not middle and not ring and not pinky:
+            return "INDEX_UP"         # Pointer Mode
+
+        if index and middle and finger_count <= 3:
+            return "MIDDLE_FINGER"   # Draw Mode (index + middle finger)
 
         return "UNKNOWN"

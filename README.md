@@ -37,7 +37,7 @@ python main.py
 - `THUMB_UP` - Next slide
 - `OPEN_PALM` - Previous slide
 - `INDEX_UP` - Pointer mode
-- `INDEX_MIDDLE` - Draw mode
+- `MIDDLE_FINGER` - Draw mode
 - `FIST` - Clear markings
 
 ## Notes
