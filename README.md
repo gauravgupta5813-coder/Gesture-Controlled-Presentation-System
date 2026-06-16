@@ -67,11 +67,11 @@ pip install -r requirements.txt
 3. Open your presentation file deck inside **Microsoft PowerPoint**.
 4. Press **`F5`** on your keyboard to drop PowerPoint into full-screen Slideshow mode view.
 5. ⚠️ **CRUCIAL STEP**: Use your physical mouse to **click once directly onto the presentation slide screen layout**. This targets window focus, directing automated keys straight to your presentation.
-6. Step back 2–3 feet from the lens and present using your hand gestures!
+6. A top-most webcam preview appears in the corner so you can keep your camera feed visible while the slideshow stays active. Press **`w`** during runtime to hide or show this webcam preview.
+7. Step back 2–3 feet from the lens and present using your hand gestures!
 
 ---
 
-<<<<<<< HEAD
 - `THUMB_UP` - Next slide
 - `OPEN_PALM` - Previous slide
 - `INDEX_UP` - Pointer mode
